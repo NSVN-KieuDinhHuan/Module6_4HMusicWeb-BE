@@ -53,7 +53,8 @@ public class UserService implements IUserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        User user = userRepository.findByUsername(username);
+        return UserPrincipal.build(user);
     }
 
     @Override
