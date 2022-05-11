@@ -1,6 +1,7 @@
-package repository;
+package com.codegym.g2m6appmusicbe.repository;
 
-import model.entity.Playlist;
+
+import com.codegym.g2m6appmusicbe.model.entity.Playlist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
