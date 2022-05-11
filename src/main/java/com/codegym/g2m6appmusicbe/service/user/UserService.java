@@ -1,11 +1,8 @@
 package com.codegym.g2m6appmusicbe.service.user;
 
 import com.codegym.g2m6appmusicbe.model.entity.User;
-import com.codegym.g2m6appmusicbe.model.entity.UserPrincipal;
 import com.codegym.g2m6appmusicbe.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -35,9 +32,4 @@ public class UserService implements IUserService{
         userRepository.deleteById(id);
     }
 
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
-    }
 }
