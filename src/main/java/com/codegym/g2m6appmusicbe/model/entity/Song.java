@@ -29,8 +29,8 @@ public class Song {
     private Category category;
     @ManyToOne
     private Album album;
-    @ManyToOne
-    private Playlist playlist;
+    @ManyToMany
+    private List<Playlist> playlists;
     @ManyToOne
     private Tag tag;
 }
