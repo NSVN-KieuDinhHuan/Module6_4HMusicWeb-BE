@@ -11,4 +11,7 @@ public class SignUpForm {
     private String username;
     private String password;
     private String confirmPassword;
+    private String phoneNumber;
+    private String address;
+    private String image;
 }

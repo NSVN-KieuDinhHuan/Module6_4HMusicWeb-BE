@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() { //bean mã hóa pass
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(10);
     }
 
     @Bean
@@ -62,9 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());//Tùy chỉnh lại thông báo 401 thông qua class restEntryPoint
         http.authorizeRequests()
                 .antMatchers("/image/**",
-                        "/login",
-                        "/register").permitAll()
-                .antMatchers("/products/**")
+                        "/login","/register").permitAll()
+                .antMatchers("/songs/**")
                 .access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .anyRequest().authenticated()
                 .and().csrf().disable();
