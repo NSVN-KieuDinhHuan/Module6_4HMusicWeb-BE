@@ -1,8 +1,9 @@
 package com.codegym.g2m6appmusicbe.controller;
 
 
-import com.codegym.g2m6appmusicbe.model.SignUpForm;
+
 import com.codegym.g2m6appmusicbe.model.dto.JwtResponse;
+import com.codegym.g2m6appmusicbe.model.dto.SignUpForm;
 import com.codegym.g2m6appmusicbe.model.entity.User;
 import com.codegym.g2m6appmusicbe.service.JwtService;
 import com.codegym.g2m6appmusicbe.service.user.IUserService;
