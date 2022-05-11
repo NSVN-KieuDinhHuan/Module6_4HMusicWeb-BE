@@ -1,7 +1,7 @@
 package com.codegym.g2m6appmusicbe.service;
 
 
-import com.codegym.g2m6appmusicbe.model.entity.UserPrincipal;
+import com.codegym.g2m6appmusicbe.model.dto.UserPrincipal;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
