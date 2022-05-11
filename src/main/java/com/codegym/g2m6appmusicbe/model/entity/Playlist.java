@@ -1,4 +1,4 @@
-package model.entity;
+package com.codegym.g2m6appmusicbe.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,32 +6,24 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "songs")
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "playlists")
 @Data
-public class Song {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
-    private String mp3File;
-    private String image;
-    private String author;
-    @ManyToMany
-    private List<Artist> artists;
+    private Date createDate;
+    private Date lastUpdate;
+    private Long views;
     @ManyToOne
     private User user;
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
-    @ManyToOne
-    private Album album;
-    @ManyToOne
-    private Playlist playlist;
-    @ManyToOne
-    private Tag tag;
 }

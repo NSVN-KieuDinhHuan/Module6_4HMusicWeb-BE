@@ -1,4 +1,4 @@
-package model.entity;
+package com.codegym.g2m6appmusicbe.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "albums")
+@Table(name = "roles")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class Album {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
