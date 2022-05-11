@@ -1,5 +1,7 @@
-package com.codegym.g2m6appmusicbe.model.entity;
+package com.codegym.g2m6appmusicbe.model.dto;
 
+import com.codegym.g2m6appmusicbe.model.entity.Role;
+import com.codegym.g2m6appmusicbe.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
