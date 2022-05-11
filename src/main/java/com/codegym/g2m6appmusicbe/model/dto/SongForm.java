@@ -1,0 +1,33 @@
+package com.codegym.g2m6appmusicbe.model.dto;
+
+import com.codegym.g2m6appmusicbe.model.entity.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class SongForm {
+    private Long id;
+    private String name;
+    private String description;
+    private String mp3File;
+    private MultipartFile image;
+    private String author;
+
+    private List<Artist> artists;
+
+    private User user;
+
+    private Category category;
+
+    private Album album;
+
+    private List<Playlist> playlists;
+
+    private Tag tag;
+}
