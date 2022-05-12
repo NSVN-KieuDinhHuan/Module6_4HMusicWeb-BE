@@ -27,7 +27,7 @@ public class User {
     private String phoneNumber;
     @Column(columnDefinition = "varchar(255)", nullable = false)
     private String address;
-    @Column(columnDefinition = "varchar(255)", nullable = false)
+    @Column(columnDefinition = "varchar(255)")
     private String image;
 
     public User(String username, String password, String phoneNumber, String address, String image) {
