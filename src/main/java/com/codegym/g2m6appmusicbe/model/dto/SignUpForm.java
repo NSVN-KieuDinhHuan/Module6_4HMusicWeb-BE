@@ -1,4 +1,4 @@
-package com.codegym.g2m6appmusicbe.model.entity;
+package com.codegym.g2m6appmusicbe.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -39,17 +39,36 @@ public class SongController {
     }
     @PostMapping
     public ResponseEntity<Song> save(@ModelAttribute SongForm songForm) {
+        MultipartFile mp3File = songForm.getMp3File();
         MultipartFile image = songForm.getImage();
+        String fileImage = songForm.getImage().getOriginalFilename();
+        String fileMp3 = songForm.getMp3File().getOriginalFilename();
         if (image.getSize() != 0) {
-            String fileName = songForm.getImage().getOriginalFilename();
             try {
-                FileCopyUtils.copy(songForm.getImage().getBytes(), new File(uploadPath + fileName));
+                FileCopyUtils.copy(songForm.getImage().getBytes(), new File(uploadPath + fileImage));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Song song = new Song(songForm.getId(), songForm.getName(), songForm.getDescription(), songForm.getMp3File(), fileName, songForm.getAuthor(),songForm.getArtists(),songForm.getUser(),songForm.getCategory(),songForm.getAlbum(),songForm.getPlaylists(),songForm.getTag());
+        }
+        if (mp3File.getSize() != 0) {
+            try {
+                FileCopyUtils.copy(songForm.getMp3File().getBytes(), new File(uploadPath + fileMp3));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Song song = new Song(songForm.getId(), songForm.getName(), songForm.getDescription(), fileMp3, fileImage, songForm.getAuthor(),songForm.getArtists(),songForm.getUser(),songForm.getCategory(),songForm.getAlbum(),songForm.getPlaylists(),songForm.getTag());
             return new ResponseEntity<>(songService.save(song), HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Song> deleteSong(@PathVariable Long id) {
+        Optional<Song> songOptional = songService.findById(id);
+        if (!songOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        songService.removeById(id);
+        return new ResponseEntity<>(songOptional.get(), HttpStatus.OK);
     }
 }

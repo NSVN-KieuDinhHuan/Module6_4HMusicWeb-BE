@@ -15,7 +15,7 @@ public class SongForm {
     private Long id;
     private String name;
     private String description;
-    private String mp3File;
+    private MultipartFile mp3File;
     private MultipartFile image;
     private String author;
 
