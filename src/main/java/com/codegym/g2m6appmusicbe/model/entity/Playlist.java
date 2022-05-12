@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "playlists")
@@ -21,6 +22,9 @@ public class Playlist {
     private Date createDate;
     private Date lastUpdate;
     private Long views;
+    // them list song
+    @ManyToMany
+    private List<Song> songs;
     @ManyToOne
     private User user;
     @ManyToOne
