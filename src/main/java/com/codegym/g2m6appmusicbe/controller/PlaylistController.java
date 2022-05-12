@@ -1,7 +1,9 @@
 package com.codegym.g2m6appmusicbe.controller;
 
 import com.codegym.g2m6appmusicbe.model.entity.Playlist;
+import com.codegym.g2m6appmusicbe.model.entity.User;
 import com.codegym.g2m6appmusicbe.service.playlist.IPlaylistService;
+import com.codegym.g2m6appmusicbe.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,8 @@ import java.util.Optional;
 public class PlaylistController {
     @Autowired
     private IPlaylistService playlistService;
+    @Autowired
+    private IUserService userService;
     @GetMapping("/user/{user_id}")
     public ResponseEntity<Iterable<Playlist>> getByUserId(@PathVariable Long user_id){
         Iterable<Playlist> playlists = playlistService.findByUserId(user_id);
@@ -42,9 +46,12 @@ public class PlaylistController {
 
     //Xay dung ham creaty playlist by user
     @PostMapping("/user/{user_id}")
-    public ResponseEntity<Playlist> createById(@PathVariable Long user_id, @RequestBody Playlist playlist){
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Playlist> createByUserId(@PathVariable Long user_id, @RequestBody Playlist playlist){
+        Optional<User> userOptional = userService.findById(user_id);
+        playlist.setUser(userOptional.get());
+        return new ResponseEntity<>(playlistService.save(playlist), HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<Playlist> update(@PathVariable Long id, @RequestBody Playlist playlist){
         Optional<Playlist> optionalPlaylist = playlistService.findById(id);
