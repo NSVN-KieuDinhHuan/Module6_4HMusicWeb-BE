@@ -16,13 +16,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(columnDefinition = "Varchar(12)", nullable = false, unique = true)
+    @Column(columnDefinition = "Varchar(255)", nullable = false, unique = true)
     private String username;
-    @Column(columnDefinition = "varchar(20)", nullable = false)
+    @Column(columnDefinition = "varchar(255)", nullable = false)
     private String password;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role")
-    private List<Role> roles;
     @Column( nullable = false, unique = true)
     private String phoneNumber;
     @Column(columnDefinition = "varchar(255)", nullable = false)
@@ -30,6 +27,9 @@ public class User {
     @Column(columnDefinition = "varchar(255)", nullable = false)
     private String image;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role")
+    private List<Role> roles;
     public User(String username, String password, String phoneNumber, String address, String image) {
         this.username = username;
         this.password = password;
