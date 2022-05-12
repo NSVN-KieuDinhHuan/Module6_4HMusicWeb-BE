@@ -18,7 +18,7 @@ public class User {
     private Long id;
     @Column(columnDefinition = "Varchar(12)", nullable = false, unique = true)
     private String username;
-    @Column(columnDefinition = "varchar(20)", nullable = false)
+    @Column(columnDefinition = "varchar(25)", nullable = false)
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role")
