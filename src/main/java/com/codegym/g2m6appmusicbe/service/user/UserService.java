@@ -4,6 +4,7 @@ import com.codegym.g2m6appmusicbe.model.entity.Role;
 
 import com.codegym.g2m6appmusicbe.model.dto.UserPrincipal;
 import com.codegym.g2m6appmusicbe.model.entity.User;
+import com.codegym.g2m6appmusicbe.model.dto.UserPrincipal;
 import com.codegym.g2m6appmusicbe.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

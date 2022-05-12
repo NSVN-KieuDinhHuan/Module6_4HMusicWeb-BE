@@ -5,6 +5,7 @@ import com.codegym.g2m6appmusicbe.model.entity.Song;
 import com.codegym.g2m6appmusicbe.model.entity.User;
 import com.codegym.g2m6appmusicbe.service.song.ISongService;
 import com.codegym.g2m6appmusicbe.service.user.IUserService;
+import com.codegym.g2m6appmusicbe.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -70,5 +71,15 @@ public class SongController {
     public ResponseEntity<Iterable<Song>> getAllCreatedSongByUser(@PathVariable Long user_id){
         Iterable<Song> songs = songService.findCreatedSongByUserId(user_id);
         return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/user/{user_id}/{id}")
+    public ResponseEntity<Song> deleteSong(@PathVariable Long id,Long user_id) {
+        Optional<Song> songOptional = songService.findSongByIdaAndUserId(user_id,id);
+        if (!songOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        songService.removeById(id);
+        return new ResponseEntity<>(songOptional.get(), HttpStatus.OK);
     }
 }
