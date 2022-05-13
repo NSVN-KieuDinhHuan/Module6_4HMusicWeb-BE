@@ -21,16 +21,16 @@ public class Song {
     private String mp3File;
     private String image;
     private String author;
-    @ManyToMany
-    private List<Artist> artists;
+    @ManyToOne
+    private Artist artist;
     @ManyToOne
     private User user;
     @ManyToOne
     private Category category;
     @ManyToOne
     private Album album;
-    @ManyToMany
-    private List<Playlist> playlists;
+//    @ManyToMany
+//    private List<Playlist> playlists;
     @ManyToOne
     private Tag tag;
 }
