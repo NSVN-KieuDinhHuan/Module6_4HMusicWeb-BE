@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +56,8 @@ public class PlaylistController {
     public ResponseEntity<Playlist> createByUserId(@PathVariable Long user_id, @RequestBody Playlist playlist){
         Optional<User> userOptional = userService.findById(user_id);
         playlist.setUser(userOptional.get());
+        playlist.setViews(0L);
+        playlist.setCreateDate(new Date());
         return new ResponseEntity<>(playlistService.save(playlist), HttpStatus.CREATED);
     }
 
@@ -68,7 +71,24 @@ public class PlaylistController {
         return new ResponseEntity<>(playlistService.save(playlist), HttpStatus.OK);
     }
 
-    @PostMapping("/song")
+    @PutMapping("/editPlaylist/{id}")
+    public ResponseEntity<Playlist> updatePlaylist(@PathVariable Long id, @RequestBody Playlist playlist){
+        Optional<Playlist> optionalPlaylist = playlistService.findById(id);
+        if(!optionalPlaylist.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        playlist.setId(id);
+        playlist.setSongs(optionalPlaylist.get().getSongs());
+        playlist.setLastUpdate(optionalPlaylist.get().getLastUpdate());
+        playlist.setUser(optionalPlaylist.get().getUser());
+        playlist.setCategory(optionalPlaylist.get().getCategory());
+        playlist.setCreateDate(optionalPlaylist.get().getCreateDate());
+        playlist.setDescription(optionalPlaylist.get().getDescription());
+        playlist.setViews(optionalPlaylist.get().getViews());
+        return new ResponseEntity<>(playlistService.save(playlist), HttpStatus.OK);
+    }
+
+    @PostMapping("/addSong")
     public ResponseEntity<Playlist> addSongToPlaylist(@RequestParam(name = "songId") Long songId, @RequestParam(name = "playlistId") Long playlistId){
         Optional<Song> song = songService.findById(songId);
         Optional<Playlist> playlist = playlistService.findById(playlistId);
