@@ -20,4 +20,5 @@ public class CommentArtist {
     private Artist artist;
     @ManyToOne
     private User user;
+
 }

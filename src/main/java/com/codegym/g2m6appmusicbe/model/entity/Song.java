@@ -29,7 +29,7 @@ public class Song {
     private Category category;
     @ManyToOne
     private Album album;
-//    @ManyToMany
+    //    @ManyToMany
 //    private List<Playlist> playlists;
     @ManyToOne
     private Tag tag;
