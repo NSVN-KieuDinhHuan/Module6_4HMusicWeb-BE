@@ -1,5 +1,6 @@
 package com.codegym.g2m6appmusicbe.controller;
 
+import com.codegym.g2m6appmusicbe.model.dto.ChangePasswordForm;
 import com.codegym.g2m6appmusicbe.model.dto.JwtResponse;
 import com.codegym.g2m6appmusicbe.model.dto.SignUpForm;
 import com.codegym.g2m6appmusicbe.model.entity.User;
@@ -84,5 +85,18 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(user.get(), HttpStatus.OK);
+    }
+
+    @PutMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordForm changePasswordForm) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(changePasswordForm.getUsername(), changePasswordForm.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        User user= userService.findByUsername(changePasswordForm.getUsername());
+        if (changePasswordForm.getPassword().equals(changePasswordForm.getNewPassword())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        user.setPassword(changePasswordForm.getNewPassword());
+        return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
     }
 }
