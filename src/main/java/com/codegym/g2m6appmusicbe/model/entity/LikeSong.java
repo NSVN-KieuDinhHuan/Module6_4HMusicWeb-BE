@@ -7,21 +7,17 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "like_song")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Comment {
+public class LikeSong {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String content;
+    private boolean value;
     @ManyToOne
     private Song song;
-    @ManyToOne
-    private Playlist playlist;
-    @ManyToOne
-    private Artist artist;
     @ManyToOne
     private User user;
 }

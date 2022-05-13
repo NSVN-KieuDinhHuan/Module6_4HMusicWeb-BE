@@ -5,24 +5,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "artists")
+@Table(name = "comments_artist")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Artist {
+public class CommentArtist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private boolean gender;
-    private Date dateOfBirth;
-    private String story;
+    private String content;
     @ManyToOne
-    private Category category;
-    private String band;
-    private String moreInfo;
+    private Artist artist;
+    @ManyToOne
+    private User user;
+
 }

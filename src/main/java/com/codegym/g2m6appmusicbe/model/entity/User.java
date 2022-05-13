@@ -23,7 +23,7 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role")
     private List<Role> roles;
-    @Column( nullable = false, unique = true)
+    @Column( nullable = false)
     private String phoneNumber;
     @Column(columnDefinition = "varchar(255)", nullable = false)
     private String address;
