@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,16 +16,12 @@ public class SongForm {
     private MultipartFile mp3File;
     private MultipartFile image;
     private String author;
-
-    private List<Artist> artists;
-
+    private Artist artist;
     private User user;
 
     private Category category;
 
     private Album album;
-
-    private List<Playlist> playlists;
 
     private Tag tag;
 }

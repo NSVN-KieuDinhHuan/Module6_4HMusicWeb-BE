@@ -36,4 +36,8 @@ public class SongService implements ISongService{
     public Iterable<Song> findSongByNameContaining(String name) {
         return songRepository.findByNameContaining(name);
     }
+    @Override
+    public Iterable<Song> findCreatedSongByUserId(Long user_id) {
+        return songRepository.findCreatedSongByUserId(user_id);
+    }
 }

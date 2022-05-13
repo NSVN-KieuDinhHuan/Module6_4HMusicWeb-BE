@@ -2,7 +2,9 @@ package com.codegym.g2m6appmusicbe.controller;
 
 import com.codegym.g2m6appmusicbe.model.dto.SongForm;
 import com.codegym.g2m6appmusicbe.model.entity.Song;
+import com.codegym.g2m6appmusicbe.model.entity.User;
 import com.codegym.g2m6appmusicbe.service.song.ISongService;
+import com.codegym.g2m6appmusicbe.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,8 @@ import java.util.Optional;
 public class SongController {
     @Autowired
     private ISongService songService;
+    @Autowired
+    private IUserService userService;
 
     @Value("${file-upload}")
     private String uploadPath;
@@ -37,29 +41,37 @@ public class SongController {
         Optional<Song> songOptional = songService.findById(id);
         return new ResponseEntity<>(songOptional.get(), HttpStatus.OK);
     }
-    @PostMapping
-    public ResponseEntity<Song> save(@ModelAttribute SongForm songForm) {
-        MultipartFile mp3File = songForm.getMp3File();
-        MultipartFile image = songForm.getImage();
-        String fileImage = songForm.getImage().getOriginalFilename();
-        String fileMp3 = songForm.getMp3File().getOriginalFilename();
-        if (image.getSize() != 0) {
+    @PostMapping("/user/{user_id}")
+    public ResponseEntity<Song> save(@ModelAttribute SongForm songForm ,@PathVariable Long user_id){
+        Optional<User> user=userService.findById(user_id);
+        MultipartFile song=songForm.getMp3File();
+        MultipartFile image=songForm.getImage();
+        String imageName="";
+        String songName="";
+        if (image.getSize()!=0){
+            imageName=songForm.getImage().getOriginalFilename();
             try {
-                FileCopyUtils.copy(songForm.getImage().getBytes(), new File(uploadPath + fileImage));
-            } catch (IOException e) {
+                FileCopyUtils.copy(songForm.getImage().getBytes(), new File(uploadPath + imageName));
+            }catch (IOException e){
                 e.printStackTrace();
             }
         }
-        if (mp3File.getSize() != 0) {
+        if (song.getSize()!=0){
+            songName=songForm.getMp3File().getOriginalFilename();
             try {
-                FileCopyUtils.copy(songForm.getMp3File().getBytes(), new File(uploadPath + fileMp3));
-            } catch (IOException e) {
+                FileCopyUtils.copy(songForm.getMp3File().getBytes(), new File(uploadPath + songName));
+            }catch (IOException e){
                 e.printStackTrace();
             }
-            Song song = new Song(songForm.getId(), songForm.getName(), songForm.getDescription(), fileMp3, fileImage, songForm.getAuthor(),songForm.getArtists(),songForm.getUser(),songForm.getCategory(),songForm.getAlbum(),songForm.getPlaylists(),songForm.getTag());
-            return new ResponseEntity<>(songService.save(song), HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), songForm.getArtist(),user.get(),songForm.getCategory(),songForm.getAlbum(),songForm.getTag());
+        return new ResponseEntity<>(songService.save(song1),HttpStatus.CREATED);
+    }
+
+    @GetMapping("/user/{user_id}")
+    public ResponseEntity<Iterable<Song>> getAllCreatedSongByUser(@PathVariable Long user_id){
+        Iterable<Song> songs = songService.findCreatedSongByUserId(user_id);
+        return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
