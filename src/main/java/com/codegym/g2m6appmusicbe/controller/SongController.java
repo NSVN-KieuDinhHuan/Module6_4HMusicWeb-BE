@@ -41,7 +41,7 @@ public class SongController {
         return new ResponseEntity<>(songOptional.get(), HttpStatus.OK);
     }
     @PostMapping("/user/{user_id}")
-    public ResponseEntity<Song> save(@ModelAttribute SongForm songForm ,@PathVariable Long user_id){
+    public ResponseEntity<Song> save(@PathVariable Long user_id,@ModelAttribute SongForm songForm){
         Optional<User> user=userService.findById(user_id);
         MultipartFile song=songForm.getMp3File();
         MultipartFile image=songForm.getImage();
@@ -63,7 +63,7 @@ public class SongController {
                 e.printStackTrace();
             }
         }
-        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), songForm.getArtists(),user.get(),songForm.getCategory(),songForm.getAlbum(),songForm.getPlaylists(),songForm.getTag());
+        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), songForm.getArtist(), user.get(),songForm.getCategory(),songForm.getAlbum(),songForm.getTag());
         return new ResponseEntity<>(songService.save(song1),HttpStatus.CREATED);
     }
 

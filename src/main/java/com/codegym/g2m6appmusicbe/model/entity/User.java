@@ -24,7 +24,6 @@ public class User {
     private String phoneNumber;
     @Column(columnDefinition = "varchar(255)", nullable = false)
     private String address;
-    @Column(columnDefinition = "varchar(255)", nullable = false)
     private String image;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role")
