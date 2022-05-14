@@ -1,5 +1,6 @@
 package com.codegym.g2m6appmusicbe.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class Playlist {
     private Long id;
     private String name;
     private String description;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date createDate;
     private Date lastUpdate;
     private Long views;
