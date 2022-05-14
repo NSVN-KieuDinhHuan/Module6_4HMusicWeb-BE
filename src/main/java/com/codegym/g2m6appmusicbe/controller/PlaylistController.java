@@ -81,9 +81,9 @@ public class PlaylistController {
         playlist.setSongs(optionalPlaylist.get().getSongs());
         playlist.setLastUpdate(optionalPlaylist.get().getLastUpdate());
         playlist.setUser(optionalPlaylist.get().getUser());
-        playlist.setCategory(optionalPlaylist.get().getCategory());
+//        playlist.setCategory(optionalPlaylist.get().getCategory());
         playlist.setCreateDate(optionalPlaylist.get().getCreateDate());
-        playlist.setDescription(optionalPlaylist.get().getDescription());
+//        playlist.setDescription(optionalPlaylist.get().getDescription());
         playlist.setViews(optionalPlaylist.get().getViews());
         return new ResponseEntity<>(playlistService.save(playlist), HttpStatus.OK);
     }
