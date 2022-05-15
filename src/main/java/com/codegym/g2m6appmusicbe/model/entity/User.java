@@ -20,14 +20,16 @@ public class User {
     private String username;
     @Column(columnDefinition = "varchar(255)", nullable = false)
     private String password;
-    @Column( nullable = false, unique = true)
-    private String phoneNumber;
-    @Column(columnDefinition = "varchar(255)", nullable = false)
-    private String address;
-    private String image;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role")
     private List<Role> roles;
+    @Column( nullable = false)
+    private String phoneNumber;
+    @Column(columnDefinition = "varchar(255)", nullable = false)
+    private String address;
+    @Column(columnDefinition = "varchar(255)")
+    private String image;
+
     public User(String username, String password, String phoneNumber, String address, String image) {
         this.username = username;
         this.password = password;

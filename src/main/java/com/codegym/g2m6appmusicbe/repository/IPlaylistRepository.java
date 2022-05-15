@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface IPlaylistRepository extends JpaRepository<Playlist, Long> {
     Iterable<Playlist> findAllByUser(User user);
     @Modifying
-    @Query(value = "call delete_playlist(?1)", nativeQuery = true)
+    @Query(value = "call delete_playlist1(?1)", nativeQuery = true)
     void deleteByProcedure(Long playlist_id);
 
     @Query(value = "select * from playlists where user_id = ?1", nativeQuery = true)

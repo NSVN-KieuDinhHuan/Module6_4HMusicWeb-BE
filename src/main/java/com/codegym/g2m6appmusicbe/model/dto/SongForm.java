@@ -21,8 +21,6 @@ public class SongForm {
     private String author;
     private Artist artist;
     private Category category;
-
     private Album album;
-
     private Tag tag;
 }

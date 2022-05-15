@@ -43,6 +43,7 @@ public class UserService implements IUserService {
         Role role = new Role(2L,"ROLE_USER");
         roles.add(role);
         user.setRoles(roles);
+        User newUser = userRepository.save(user);
         return userRepository.save(user);
     }
 

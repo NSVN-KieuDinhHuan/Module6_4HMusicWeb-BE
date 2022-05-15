@@ -1,13 +1,19 @@
 package com.codegym.g2m6appmusicbe.controller;
 
 import com.codegym.g2m6appmusicbe.model.entity.Playlist;
+import com.codegym.g2m6appmusicbe.model.entity.Song;
+import com.codegym.g2m6appmusicbe.model.entity.User;
 import com.codegym.g2m6appmusicbe.service.playlist.IPlaylistService;
+import com.codegym.g2m6appmusicbe.service.song.ISongService;
+import com.codegym.g2m6appmusicbe.service.user.IUserService;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.OPSize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -16,6 +22,10 @@ import java.util.Optional;
 public class PlaylistController {
     @Autowired
     private IPlaylistService playlistService;
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private ISongService songService;
     @GetMapping("/user/{user_id}")
     public ResponseEntity<Iterable<Playlist>> getByUserId(@PathVariable Long user_id){
         Iterable<Playlist> playlists = playlistService.findByUserId(user_id);
@@ -42,9 +52,12 @@ public class PlaylistController {
 
     //Xay dung ham creaty playlist by user
     @PostMapping("/user/{user_id}")
-    public ResponseEntity<Playlist> createById(@PathVariable Long user_id, @RequestBody Playlist playlist){
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Playlist> createByUserId(@PathVariable Long user_id, @RequestBody Playlist playlist){
+        Optional<User> userOptional = userService.findById(user_id);
+        playlist.setUser(userOptional.get());
+        return new ResponseEntity<>(playlistService.save(playlist), HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<Playlist> update(@PathVariable Long id, @RequestBody Playlist playlist){
         Optional<Playlist> optionalPlaylist = playlistService.findById(id);
@@ -53,6 +66,22 @@ public class PlaylistController {
         }
         playlist.setId(id);
         return new ResponseEntity<>(playlistService.save(playlist), HttpStatus.OK);
+    }
+
+    @PostMapping("/song")
+    public ResponseEntity<Playlist> addSongToPlaylist(@RequestParam(name = "songId") Long songId, @RequestParam(name = "playlistId") Long playlistId){
+        Optional<Song> song = songService.findById(songId);
+        Optional<Playlist> playlist = playlistService.findById(playlistId);
+        if(!song.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(!playlist.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<Song> songs = playlist.get().getSongs();
+        songs.add(song.get());
+        playlist.get().setSongs(songs);
+        return new ResponseEntity<>(playlistService.save(playlist.get()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
