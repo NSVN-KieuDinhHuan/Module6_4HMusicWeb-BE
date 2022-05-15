@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -55,6 +57,8 @@ public class PlaylistController {
     public ResponseEntity<Playlist> createByUserId(@PathVariable Long user_id, @RequestBody Playlist playlist){
         Optional<User> userOptional = userService.findById(user_id);
         playlist.setUser(userOptional.get());
+        playlist.setViews(0L);
+        playlist.setCreateDate(new Date());
         return new ResponseEntity<>(playlistService.save(playlist), HttpStatus.CREATED);
     }
 

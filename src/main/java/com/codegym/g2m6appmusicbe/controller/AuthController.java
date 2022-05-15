@@ -100,3 +100,4 @@ public class AuthController {
         return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
     }
 }
+
