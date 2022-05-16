@@ -1,7 +1,6 @@
 package com.codegym.g2m6appmusicbe.controller;
 
 import com.codegym.g2m6appmusicbe.model.dto.SongForm;
-import com.codegym.g2m6appmusicbe.model.entity.Playlist;
 import com.codegym.g2m6appmusicbe.model.entity.Song;
 import com.codegym.g2m6appmusicbe.model.entity.User;
 import com.codegym.g2m6appmusicbe.service.song.ISongService;
@@ -13,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +26,7 @@ public class SongController {
     private ISongService songService;
     @Autowired
     private IUserService userService;
+
     @Value("${file-upload}")
     private String uploadPath;
 
@@ -41,7 +42,7 @@ public class SongController {
         return new ResponseEntity<>(songOptional.get(), HttpStatus.OK);
     }
     @PostMapping("/user/{user_id}")
-    public ResponseEntity<Song> save(@PathVariable Long user_id,@ModelAttribute SongForm songForm){
+    public ResponseEntity<Song> save(@ModelAttribute SongForm songForm ,@PathVariable Long user_id){
         Optional<User> user=userService.findById(user_id);
         MultipartFile song=songForm.getMp3File();
         MultipartFile image=songForm.getImage();
@@ -52,7 +53,7 @@ public class SongController {
             try {
                 FileCopyUtils.copy(songForm.getImage().getBytes(), new File(uploadPath + imageName));
             }catch (IOException e){
-            e.printStackTrace();
+                e.printStackTrace();
             }
         }
         if (song.getSize()!=0){
@@ -63,8 +64,7 @@ public class SongController {
                 e.printStackTrace();
             }
         }
-        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews());
-        return new ResponseEntity<>(songService.save(song1),HttpStatus.CREATED);
+        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews(), songForm.getArtist());        return new ResponseEntity<>(songService.save(song1),HttpStatus.CREATED);
     }
 
     @GetMapping("/user/{user_id}")
@@ -74,15 +74,14 @@ public class SongController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Song> delete(@PathVariable Long id){
-        Optional<Song> optionalSong = songService.findById(id);
-        if(!optionalSong.isPresent()){
+    public ResponseEntity<Song> deleteSong(@PathVariable Long id) {
+        Optional<Song> songOptional = songService.findById(id);
+        if (!songOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         songService.removeById(id);
-        return new ResponseEntity<>(optionalSong.get(), HttpStatus.OK);
+        return new ResponseEntity<>(songOptional.get(), HttpStatus.OK);
     }
-
 
     @PutMapping("/user/{user_id}/{id}")
     public ResponseEntity<Song> update(@PathVariable Long user_id,@PathVariable Long id,@ModelAttribute SongForm songForm){
@@ -115,7 +114,6 @@ public class SongController {
                 e.printStackTrace();
             }
         }
-        Song song1 = new Song(id,songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews());
-        return new ResponseEntity<>(songService.save(song1),HttpStatus.OK);
+        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews(), songForm.getArtist());        return new ResponseEntity<>(songService.save(song1),HttpStatus.OK);
     }
 }
