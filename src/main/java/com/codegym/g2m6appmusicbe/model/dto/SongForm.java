@@ -19,12 +19,10 @@ public class SongForm {
     private MultipartFile mp3File;
     private MultipartFile image;
     private String author;
-    private Artist artist;
     private User user;
-
     private Category category;
-
     private Album album;
-
     private Tag tag;
+    private long views;
+    private Artist artist;
 }

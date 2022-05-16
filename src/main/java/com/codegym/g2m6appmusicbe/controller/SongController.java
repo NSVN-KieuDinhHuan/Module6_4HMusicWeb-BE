@@ -62,7 +62,7 @@ public class SongController {
                 e.printStackTrace();
             }
         }
-        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(),songForm.getArtist(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag());
+        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews(), songForm.getArtist());
         return new ResponseEntity<>(songService.save(song1),HttpStatus.CREATED);
     }
 
