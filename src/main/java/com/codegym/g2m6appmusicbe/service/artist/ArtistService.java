@@ -24,7 +24,7 @@ public class ArtistService implements IArtistService{
 
     @Override
     public Artist save(Artist artist) {
-        return null;
+        return artistRepository.save(artist);
     }
 
     @Override

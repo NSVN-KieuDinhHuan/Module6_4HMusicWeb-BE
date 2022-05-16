@@ -1,6 +1,5 @@
 package com.codegym.g2m6appmusicbe.controller;
 
-import com.codegym.g2m6appmusicbe.model.entity.Album;
 import com.codegym.g2m6appmusicbe.model.entity.Artist;
 import com.codegym.g2m6appmusicbe.service.artist.IArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +25,11 @@ public class ArtistController {
     public ResponseEntity<Artist>findById(@PathVariable Long id){
         Optional<Artist> artistOptional = artistService.findById(id);
         return new ResponseEntity<>(artistOptional.get(), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Artist> create(@RequestBody Artist artist){
+        Artist artist1 = new Artist(artist.getId(),artist.getName(),artist.isGender(),artist.getDateOfBirth(),artist.getStory(),artist.getCategory(),artist.getBand(),artist.getMoreInfo());
+        return new ResponseEntity<>(artistService.save(artist1), HttpStatus.CREATED);
     }
 }
