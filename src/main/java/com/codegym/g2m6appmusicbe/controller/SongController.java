@@ -1,6 +1,7 @@
 package com.codegym.g2m6appmusicbe.controller;
 
 import com.codegym.g2m6appmusicbe.model.dto.SongForm;
+import com.codegym.g2m6appmusicbe.model.entity.Playlist;
 import com.codegym.g2m6appmusicbe.model.entity.Song;
 import com.codegym.g2m6appmusicbe.model.entity.User;
 import com.codegym.g2m6appmusicbe.service.song.ISongService;
@@ -40,7 +41,7 @@ public class SongController {
         return new ResponseEntity<>(songOptional.get(), HttpStatus.OK);
     }
     @PostMapping("/user/{user_id}")
-    public ResponseEntity<Song> save(@ModelAttribute SongForm songForm ,@PathVariable Long user_id){
+    public ResponseEntity<Song> save(@PathVariable Long user_id,@ModelAttribute SongForm songForm){
         Optional<User> user=userService.findById(user_id);
         MultipartFile song=songForm.getMp3File();
         MultipartFile image=songForm.getImage();
@@ -62,7 +63,7 @@ public class SongController {
                 e.printStackTrace();
             }
         }
-        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews(), songForm.getArtist());
+        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews());
         return new ResponseEntity<>(songService.save(song1),HttpStatus.CREATED);
     }
 
@@ -70,5 +71,51 @@ public class SongController {
     public ResponseEntity<Iterable<Song>> getAllCreatedSongByUser(@PathVariable Long user_id){
         Iterable<Song> songs = songService.findCreatedSongByUserId(user_id);
         return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Song> delete(@PathVariable Long id){
+        Optional<Song> optionalSong = songService.findById(id);
+        if(!optionalSong.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        songService.removeById(id);
+        return new ResponseEntity<>(optionalSong.get(), HttpStatus.OK);
+    }
+
+
+    @PutMapping("/user/{user_id}/{id}")
+    public ResponseEntity<Song> update(@PathVariable Long user_id,@PathVariable Long id,@ModelAttribute SongForm songForm){
+        Optional<User> user=userService.findById(user_id);
+        Optional<Song> oldsong=songService.findById(id);
+        if(!oldsong.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        MultipartFile song=songForm.getMp3File();
+        MultipartFile image=songForm.getImage();
+        String imageName="";
+        String songName="";
+        if (image==null) {
+            imageName=oldsong.get().getImage();
+        }else {
+            imageName = songForm.getImage().getOriginalFilename();
+            try {
+                FileCopyUtils.copy(songForm.getImage().getBytes(), new File(uploadPath + imageName));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        if (song==null) {
+            songName=oldsong.get().getMp3File();
+        }else {
+            songName = songForm.getMp3File().getOriginalFilename();
+            try {
+                FileCopyUtils.copy(songForm.getMp3File().getBytes(), new File(uploadPath + songName));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        Song song1 = new Song(id,songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews());
+        return new ResponseEntity<>(songService.save(song1),HttpStatus.OK);
     }
 }
