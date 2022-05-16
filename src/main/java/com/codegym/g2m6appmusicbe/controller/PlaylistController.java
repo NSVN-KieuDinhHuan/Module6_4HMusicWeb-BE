@@ -104,6 +104,27 @@ public class PlaylistController {
         return new ResponseEntity<>(playlistService.save(playlist.get()), HttpStatus.OK);
     }
 
+    @PostMapping("removeSong")
+    public ResponseEntity<Playlist> removeSong(@RequestParam(name = "songId") Long songId, @RequestParam(name = "playlistId") Long playlistId){
+        Optional<Song> song = songService.findById(songId);
+        Optional<Playlist> playlist = playlistService.findById(playlistId);
+        if(!song.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(!playlist.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<Song> songs = playlist.get().getSongs();
+        for (int i = 0; i < songs.size(); i++) {
+            if(songId == songs.get(i).getId()){
+                songs.remove(i);
+                break;
+            }
+        }
+        playlist.get().setSongs(songs);
+        return new ResponseEntity<>(playlistService.save(playlist.get()), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Playlist> delete(@PathVariable Long id){
         Optional<Playlist> optionalPlaylist = playlistService.findById(id);

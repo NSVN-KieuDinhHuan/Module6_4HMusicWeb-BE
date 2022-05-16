@@ -25,6 +25,6 @@ public class Artist {
     private Category category;
     private String band;
     private String moreInfo;
-    @ManyToMany
-    private List<Song> songs;
+//    @ManyToMany
+//    private List<Song> songs;
 }
