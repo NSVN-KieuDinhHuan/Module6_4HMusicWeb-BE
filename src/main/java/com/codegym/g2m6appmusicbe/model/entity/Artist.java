@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "artists")
@@ -24,4 +25,6 @@ public class Artist {
     private Category category;
     private String band;
     private String moreInfo;
+    @ManyToMany
+    private List<Song> songs;
 }
