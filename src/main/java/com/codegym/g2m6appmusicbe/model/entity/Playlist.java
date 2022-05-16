@@ -23,7 +23,7 @@ public class Playlist {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private Date createDate;
     private Date lastUpdate;
-    private Long views;
+    private long views;
     // them list song
     @ManyToMany
     private List<Song> songs;
