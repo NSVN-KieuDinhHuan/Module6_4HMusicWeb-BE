@@ -20,4 +20,10 @@ public class LikeSong {
     private Song song;
     @ManyToOne
     private User user;
+
+    public LikeSong(boolean value, Song song, User user) {
+        this.value = value;
+        this.song = song;
+        this.user = user;
+    }
 }
