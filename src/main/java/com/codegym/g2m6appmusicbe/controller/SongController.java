@@ -63,7 +63,7 @@ public class SongController {
                 e.printStackTrace();
             }
         }
-        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews());
+        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews(), songForm.getArtist());
         return new ResponseEntity<>(songService.save(song1),HttpStatus.CREATED);
     }
 
@@ -84,7 +84,7 @@ public class SongController {
     }
 
 
-    @PutMapping("/user/{user_id}/{id}")
+    @PostMapping ("/user/{user_id}/{id}")
     public ResponseEntity<Song> update(@PathVariable Long user_id,@PathVariable Long id,@ModelAttribute SongForm songForm){
         Optional<User> user=userService.findById(user_id);
         Optional<Song> oldsong=songService.findById(id);
@@ -115,7 +115,7 @@ public class SongController {
                 e.printStackTrace();
             }
         }
-        Song song1 = new Song(id,songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews());
+        Song song1 = new Song(id,songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews(), songForm.getArtist());
         return new ResponseEntity<>(songService.save(song1),HttpStatus.OK);
     }
 }

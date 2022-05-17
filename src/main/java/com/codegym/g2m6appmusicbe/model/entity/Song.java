@@ -21,8 +21,6 @@ public class Song {
     private String mp3File;
     private String image;
     private String author;
-    //    @ManyToOne
-//    private Artist artist;
     @ManyToOne
     private User user;
     @ManyToOne
@@ -31,5 +29,7 @@ public class Song {
     private Album album;
     @ManyToOne
     private Tag tag;
-    private Long views;
+    private long views;
+    @ManyToOne
+    private Artist artist;
 }
