@@ -58,6 +58,8 @@ public class PlaylistController {
         playlist.setUser(userOptional.get());
         playlist.setViews(0L);
         playlist.setCreateDate(new Date());
+        playlist.setLikes(0);
+        playlist.setComments(0);
         return new ResponseEntity<>(playlistService.save(playlist), HttpStatus.CREATED);
     }
 

@@ -44,6 +44,9 @@ public class CommentPlaylistController {
         }
         commentPlaylist.setPlaylist(playlistOptional.get());
         commentPlaylist.setUser(userOptional.get());
+        int oldComments = playlistOptional.get().getComments();
+        playlistOptional.get().setComments(oldComments + 1);
+//        playlistService.save(playlistOptional.get());
         return new ResponseEntity<>(commentPlaylistService.save(commentPlaylist), HttpStatus.CREATED);
     }
 
@@ -66,6 +69,9 @@ public class CommentPlaylistController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         commentPlaylistService.removeById(commentId);
+        int oldComments = commentPlaylistOptional.get().getPlaylist().getComments();
+        commentPlaylistOptional.get().getPlaylist().setComments(oldComments - 1);
+        playlistService.save(commentPlaylistOptional.get().getPlaylist());
         return new ResponseEntity<>(commentPlaylistOptional.get(), HttpStatus.OK);
     }
 }

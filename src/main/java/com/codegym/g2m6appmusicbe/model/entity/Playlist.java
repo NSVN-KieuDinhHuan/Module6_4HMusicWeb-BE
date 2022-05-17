@@ -32,4 +32,6 @@ public class Playlist {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+    private int likes;
+    private int comments;
 }
