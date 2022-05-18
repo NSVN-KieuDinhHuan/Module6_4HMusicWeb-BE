@@ -13,4 +13,6 @@ public interface ISongRepository extends PagingAndSortingRepository<Song, Long> 
     Iterable<Song> findCreatedSongByUserId(Long user_id);
     @Query(value = "select * from songs where user_id = ?1 and id=?2 ", nativeQuery = true)
     Optional<Song> findSongByIdaAndUserId(Long user_id, Long id);
+
+
 }

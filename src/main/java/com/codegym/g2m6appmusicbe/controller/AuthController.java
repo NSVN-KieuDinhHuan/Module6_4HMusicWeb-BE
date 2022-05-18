@@ -54,7 +54,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@ModelAttribute SignUpForm user) {
+    public ResponseEntity<User> register(@RequestBody User user) {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -154,7 +154,7 @@ public class AuthController {
         Iterable<User> users = userService.findAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-    @GetMapping("/{id}")
+    @GetMapping("user/{id}")
     public ResponseEntity<User> getById(@PathVariable Long id){
         Optional<User> user = userService.findById(id);
         if(!user.isPresent()){

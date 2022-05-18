@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,10 +46,11 @@ public class SongController {
         Optional<User> user=userService.findById(user_id);
         MultipartFile song=songForm.getMp3File();
         MultipartFile image=songForm.getImage();
+        long currentTime = System.currentTimeMillis(); //Xử lý lấy thời gian hiện tại
         String imageName="";
         String songName="";
         if (image.getSize()!=0){
-            imageName=songForm.getImage().getOriginalFilename();
+            imageName=currentTime+songForm.getImage().getOriginalFilename();
             try {
                 FileCopyUtils.copy(songForm.getImage().getBytes(), new File(uploadPath + imageName));
             }catch (IOException e){
@@ -56,7 +58,7 @@ public class SongController {
             }
         }
         if (song.getSize()!=0){
-            songName=songForm.getMp3File().getOriginalFilename();
+            songName=currentTime+songForm.getMp3File().getOriginalFilename();
             try {
                 FileCopyUtils.copy(songForm.getMp3File().getBytes(), new File(uploadPath + songName));
             }catch (IOException e){
@@ -83,11 +85,23 @@ public class SongController {
         return new ResponseEntity<>(optionalSong.get(), HttpStatus.OK);
     }
 
+       @PostMapping("views/{songid}")
+       public ResponseEntity<Song> update(@PathVariable Long songid) {
+           Optional<Song> optionalSong = songService.findById(songid);
+           if(!optionalSong.isPresent()){
+               return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+           }
 
-    @PostMapping ("/user/{user_id}/{id}")
+           optionalSong.get().setViews(optionalSong.get().getViews()+1);
+           return new ResponseEntity<>(songService.save(optionalSong.get()),HttpStatus.OK);
+       }
+
+           @PostMapping ("/user/{user_id}/{id}")
     public ResponseEntity<Song> update(@PathVariable Long user_id,@PathVariable Long id,@ModelAttribute SongForm songForm){
         Optional<User> user=userService.findById(user_id);
         Optional<Song> oldsong=songService.findById(id);
+        long currentTime = System.currentTimeMillis(); //Xử lý lấy thời gian hiện tại
+
         if(!oldsong.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -98,7 +112,7 @@ public class SongController {
         if (image==null) {
             imageName=oldsong.get().getImage();
         }else {
-            imageName = songForm.getImage().getOriginalFilename();
+            imageName = currentTime+songForm.getImage().getOriginalFilename();
             try {
                 FileCopyUtils.copy(songForm.getImage().getBytes(), new File(uploadPath + imageName));
             }catch (IOException e){
@@ -108,14 +122,15 @@ public class SongController {
         if (song==null) {
             songName=oldsong.get().getMp3File();
         }else {
-            songName = songForm.getMp3File().getOriginalFilename();
+            songName = currentTime+songForm.getMp3File().getOriginalFilename();
             try {
                 FileCopyUtils.copy(songForm.getMp3File().getBytes(), new File(uploadPath + songName));
             }catch (IOException e){
                 e.printStackTrace();
             }
         }
-        Song song1 = new Song(id,songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews(), songForm.getArtist());
+        Song song1 = new Song(id,songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), 0, songForm.getArtist(),0,0);
+
         return new ResponseEntity<>(songService.save(song1),HttpStatus.OK);
     }
 }

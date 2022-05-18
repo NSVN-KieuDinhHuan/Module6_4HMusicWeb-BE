@@ -25,7 +25,7 @@ public class CommentSongController {
     private ISongService songService;
     @Autowired
     private IUserService userService;
-    @GetMapping("/song/{songId}")
+    @GetMapping("/{songId}")
     public ResponseEntity<Iterable<CommentSong>> findAllBySong(@PathVariable Long songId){
         Optional<Song> songOptional = songService.findById(songId);
         if(!songOptional.isPresent()){
