@@ -41,4 +41,14 @@ public class SongService implements ISongService{
     public Iterable<Song> findCreatedSongByUserId(Long user_id) {
         return songRepository.findCreatedSongByUserId(user_id);
     }
+
+    @Override
+    public Iterable<Song> findAllByViewDesc() {
+        return songRepository.findAllByViewDesc();
+    }
+
+    @Override
+    public Song findTopViewsSong() {
+        return songRepository.findTopViewsSong();
+    }
 }

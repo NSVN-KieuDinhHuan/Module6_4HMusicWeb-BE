@@ -71,4 +71,15 @@ public class SongController {
         Iterable<Song> songs = songService.findCreatedSongByUserId(user_id);
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
+
+    @GetMapping("/getMostViewSongs")
+    public ResponseEntity<Iterable<Song>> getAllByViewDesc(){
+        Iterable<Song> songs = songService.findAllByViewDesc();
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+    @GetMapping("/getTopViewSong")
+    public ResponseEntity<Song> getTopViewSong(){
+        Song song = songService.findTopViewsSong();
+        return new ResponseEntity<>(song, HttpStatus.OK);
+    }
 }

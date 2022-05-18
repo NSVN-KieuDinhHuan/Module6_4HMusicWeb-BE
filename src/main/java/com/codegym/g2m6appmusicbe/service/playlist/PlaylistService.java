@@ -8,7 +8,7 @@ import com.sun.org.apache.bcel.internal.generic.ARETURN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PlaylistService implements IPlaylistService {
@@ -53,4 +53,15 @@ public class PlaylistService implements IPlaylistService {
     public Iterable<Playlist> findAllByNameContaining(String name) {
         return playlistRepository.findAllByNameContaining(name);
     }
+
+    @Override
+    public Iterable<Playlist> findAllByViewDesc() {
+        return playlistRepository.findAllByViewDesc();
+    }
+
+    @Override
+    public Iterable<Playlist> findAllByCreateDateDesc() {
+        return playlistRepository.findAllByCreateDateDesc();
+    }
+
 }
