@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface ILikePlaylistService extends IGeneralService<LikePlaylist> {
     Optional<LikePlaylist> findByPlaylistAndUser(Playlist playlist, User user);
+    Iterable<LikePlaylist> findAllByPlaylist(Playlist playlist);
 }

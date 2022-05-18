@@ -48,4 +48,9 @@ public class PlaylistService implements IPlaylistService {
     public Iterable<Playlist> findByUserId(Long user_id) {
         return playlistRepository.findByUserId(user_id);
     }
+
+    @Override
+    public Iterable<Playlist> findAllByNameContaining(String name) {
+        return playlistRepository.findAllByNameContaining(name);
+    }
 }

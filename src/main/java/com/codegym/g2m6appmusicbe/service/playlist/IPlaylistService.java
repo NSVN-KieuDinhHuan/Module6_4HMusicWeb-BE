@@ -8,4 +8,5 @@ public interface IPlaylistService extends IGeneralService<Playlist> {
     Iterable<Playlist> findAllByUser(User user);
     void deleteByProcedure(Long playlist_id);
     Iterable<Playlist> findByUserId(Long user_id);
+    Iterable<Playlist> findAllByNameContaining(String name);
 }

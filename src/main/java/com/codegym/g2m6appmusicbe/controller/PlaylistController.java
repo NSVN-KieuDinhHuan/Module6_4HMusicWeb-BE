@@ -136,4 +136,13 @@ public class PlaylistController {
         playlistService.deleteByProcedure(id);
         return new ResponseEntity<>(optionalPlaylist.get(), HttpStatus.OK);
     }
+
+    @GetMapping("/search/{name}")
+    public ResponseEntity<Iterable<Playlist>> findAllByName(@PathVariable String name){
+        Iterable<Playlist> playlists = playlistService.findAllByNameContaining(name);
+        if(playlists == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
 }

@@ -63,9 +63,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/image/**",
                         "/login","/register").permitAll()
-                .antMatchers("/songs/**")
-                .access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .anyRequest().authenticated()
+                .antMatchers("/admin/**")
+                .access("hasRole('ROLE_ADMIN')")
+//                .anyRequest().authenticated()
                 .and().csrf().disable();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());

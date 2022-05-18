@@ -37,4 +37,9 @@ public class LikeSongService implements ILikeSongService{
     public Optional<LikeSong> findBySongAndUser(Song song, User user) {
         return likeSongRepository.findBySongAndUser(song, user);
     }
+
+    @Override
+    public Iterable<LikeSong> findAllBySong(Song song) {
+        return likeSongRepository.findAllBySong(song);
+    }
 }
