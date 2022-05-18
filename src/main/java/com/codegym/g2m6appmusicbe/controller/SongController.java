@@ -14,7 +14,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
@@ -42,7 +41,7 @@ public class SongController {
         return new ResponseEntity<>(songOptional.get(), HttpStatus.OK);
     }
     @PostMapping("/user/{user_id}")
-    public ResponseEntity<Song> save(@PathVariable Long user_id,@ModelAttribute SongForm songForm){
+    public ResponseEntity<Song> save(@ModelAttribute SongForm songForm ,@PathVariable Long user_id){
         Optional<User> user=userService.findById(user_id);
         MultipartFile song=songForm.getMp3File();
         MultipartFile image=songForm.getImage();
@@ -64,7 +63,7 @@ public class SongController {
                 e.printStackTrace();
             }
         }
-        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), songForm.getViews(), songForm.getArtist());
+        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), 0, songForm.getArtist(),0,0);
         return new ResponseEntity<>(songService.save(song1),HttpStatus.CREATED);
     }
 

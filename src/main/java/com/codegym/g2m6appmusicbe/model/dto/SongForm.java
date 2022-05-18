@@ -25,4 +25,6 @@ public class SongForm {
     private Tag tag;
     private long views;
     private Artist artist;
+    private int likes;
+    private int comments;
 }

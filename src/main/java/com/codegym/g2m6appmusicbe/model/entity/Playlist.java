@@ -23,7 +23,7 @@ public class Playlist {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private Date createDate;
     private Date lastUpdate;
-    private Long views;
+    private long views;
     // them list song
     @ManyToMany
     private List<Song> songs;
@@ -32,4 +32,6 @@ public class Playlist {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+    private int likes;
+    private int comments;
 }

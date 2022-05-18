@@ -60,6 +60,8 @@ public class PlaylistController {
         playlist.setUser(userOptional.get());
         playlist.setViews(0L);
         playlist.setCreateDate(new Date());
+        playlist.setLikes(0);
+        playlist.setComments(0);
         return new ResponseEntity<>(playlistService.save(playlist), HttpStatus.CREATED);
     }
 
@@ -102,6 +104,27 @@ public class PlaylistController {
         }
         List<Song> songs = playlist.get().getSongs();
         songs.add(song.get());
+        playlist.get().setSongs(songs);
+        return new ResponseEntity<>(playlistService.save(playlist.get()), HttpStatus.OK);
+    }
+
+    @PostMapping("removeSong")
+    public ResponseEntity<Playlist> removeSong(@RequestParam(name = "songId") Long songId, @RequestParam(name = "playlistId") Long playlistId){
+        Optional<Song> song = songService.findById(songId);
+        Optional<Playlist> playlist = playlistService.findById(playlistId);
+        if(!song.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(!playlist.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<Song> songs = playlist.get().getSongs();
+        for (int i = 0; i < songs.size(); i++) {
+            if(songId == songs.get(i).getId()){
+                songs.remove(i);
+                break;
+            }
+        }
         playlist.get().setSongs(songs);
         return new ResponseEntity<>(playlistService.save(playlist.get()), HttpStatus.OK);
     }
