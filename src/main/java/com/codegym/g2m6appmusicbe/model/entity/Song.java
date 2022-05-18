@@ -32,4 +32,6 @@ public class Song {
     private long views;
     @ManyToOne
     private Artist artist;
+    private int comments;
+    private int likes;
 }

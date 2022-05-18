@@ -29,7 +29,7 @@ public class ArtistController {
 
     @PostMapping
     public ResponseEntity<Artist> create(@RequestBody Artist artist){
-        Artist artist1 = new Artist(artist.getId(),artist.getName(),artist.isGender(),artist.getDateOfBirth(),artist.getStory(),artist.getCategory(),artist.getBand(),artist.getMoreInfo());
+        Artist artist1 = new Artist(artist.getId(),artist.getName(),artist.isGender(),artist.getDateOfBirth(),artist.getStory(),artist.getCategory(),artist.getBand(),artist.getMoreInfo(),0,0);
         return new ResponseEntity<>(artistService.save(artist1), HttpStatus.CREATED);
     }
 }
