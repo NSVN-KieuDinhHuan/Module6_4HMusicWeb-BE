@@ -163,7 +163,7 @@ public class AuthController {
         return new ResponseEntity<>(user.get(), HttpStatus.OK);
     }
 
-    @PutMapping("/changePassword")
+    @PutMapping("/changePassword/{id}")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordForm changePasswordForm) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(changePasswordForm.getUsername(), changePasswordForm.getPassword()));
