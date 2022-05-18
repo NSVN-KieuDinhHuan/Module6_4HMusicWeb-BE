@@ -1,6 +1,7 @@
 package com.codegym.g2m6appmusicbe.controller;
 
 import com.codegym.g2m6appmusicbe.model.dto.SongForm;
+import com.codegym.g2m6appmusicbe.model.entity.Playlist;
 import com.codegym.g2m6appmusicbe.model.entity.Song;
 import com.codegym.g2m6appmusicbe.model.entity.User;
 import com.codegym.g2m6appmusicbe.service.song.ISongService;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -81,5 +83,17 @@ public class SongController {
     public ResponseEntity<Song> getTopViewSong(){
         Song song = songService.findTopViewsSong();
         return new ResponseEntity<>(song, HttpStatus.OK);
+    }
+
+    @GetMapping("/getTopLikeSong")
+    public ResponseEntity<Iterable<Song>> getTopLikeSongs(){
+        List<Song> songs = songService.findTopLikeSong();
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+
+    @GetMapping("/getTopLikeNumber")
+    public ResponseEntity<Iterable<Long>> getTopLikeNumber(){
+        List<Long> likeNumbers = songService.findTopSongLikeNumer();
+        return new ResponseEntity<>(likeNumbers, HttpStatus.OK);
     }
 }
