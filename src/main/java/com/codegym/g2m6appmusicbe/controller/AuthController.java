@@ -54,7 +54,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@ModelAttribute SignUpForm user) {
+    public ResponseEntity<User> register(@RequestBody SignUpForm user) {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -65,23 +65,22 @@ public class AuthController {
                 user.getRoles(),
                 user.getPhoneNumber(),
                 user.getAddress());
-
         return new ResponseEntity<>(userService.save(user0), HttpStatus.CREATED);
     }
 
     @PostMapping("/register2")
     public ResponseEntity<User> registerImage(@ModelAttribute SignUpForm signUpForm) {
         MultipartFile userImage = signUpForm.getImage();
-        String imageName="";
+        String imageName = "";
         if (!signUpForm.getPassword().equals(signUpForm.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if(userImage.getSize()!=0){
+        if (userImage.getSize() != 0) {
             imageName = signUpForm.getImage().getOriginalFilename();
             imageName = System.currentTimeMillis() + imageName;
             try {
                 FileCopyUtils.copy(signUpForm.getImage().getBytes(), new File(uploadPath + imageName));
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -115,7 +114,7 @@ public class AuthController {
         }
         MultipartFile multipartFile = newSignUpForm.getImage();
         String fileName;
-        if(multipartFile == null){
+        if (multipartFile == null) {
             fileName = oldUser.get().getImage();
         } else {
             fileName = multipartFile.getOriginalFilename();
@@ -150,14 +149,15 @@ public class AuthController {
     }
 
     @GetMapping()
-    public ResponseEntity<Iterable<User>> getAllUser(){
+    public ResponseEntity<Iterable<User>> getAllUser() {
         Iterable<User> users = userService.findAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id){
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<User> getById(@PathVariable Long id) {
         Optional<User> user = userService.findById(id);
-        if(!user.isPresent()){
+        if (!user.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(user.get(), HttpStatus.OK);
@@ -168,7 +168,7 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(changePasswordForm.getUsername(), changePasswordForm.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user= userService.findByUsername(changePasswordForm.getUsername());
+        User user = userService.findByUsername(changePasswordForm.getUsername());
         if (changePasswordForm.getPassword().equals(changePasswordForm.getNewPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
