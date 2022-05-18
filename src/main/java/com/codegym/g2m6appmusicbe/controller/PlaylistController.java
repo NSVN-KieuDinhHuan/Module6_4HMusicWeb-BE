@@ -158,4 +158,17 @@ public class PlaylistController {
         Iterable<Playlist> playlists = playlistService.findAllByCreateDateDesc();
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
+
+    @GetMapping("/getTopLikePlaylist")
+    public ResponseEntity<Iterable<Playlist>> getTopLikePlaylists(){
+        List<Playlist> playlists = playlistService.findTopLikePlaylist();
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
+    @GetMapping("/getTopLikeNumber")
+    public ResponseEntity<Iterable<Long>> getTopLikeNumber(){
+        List<Long> likeNumbers = playlistService.findTopPlaylistLikeNumer();
+        return new ResponseEntity<>(likeNumbers, HttpStatus.OK);
+    }
+
 }
