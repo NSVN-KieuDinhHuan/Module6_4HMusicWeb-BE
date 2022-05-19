@@ -74,17 +74,20 @@ public class SongController {
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 
+    //lấy ra 5 bài nhiều view nhất
     @GetMapping("/getMostViewSongs")
     public ResponseEntity<Iterable<Song>> getAllByViewDesc(){
         Iterable<Song> songs = songService.findAllByViewDesc();
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
+    //lấy ra bài hát dc nghe nhiều nhất
     @GetMapping("/getTopViewSong")
     public ResponseEntity<Song> getTopViewSong(){
         Song song = songService.findTopViewsSong();
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
 
+    // lấy ra 5 bài hát dc like nhiều nhất
     @GetMapping("/getTopLikeSong")
     public ResponseEntity<Iterable<Song>> getTopLikeSongs(){
         List<Song> songs = songService.findTopLikeSong();

@@ -17,12 +17,12 @@ public interface ILikePlaylistRepository extends JpaRepository<LikePlaylist, Lon
     Iterable<LikePlaylist> findAllByPlaylist(Playlist playlist);
 
     @Query(value = "select playlist_id from (select count(user_id) as like_number, playlist_id from like_playlist\n" +
-            "group by playlist_id order by like_number desc limit 5) as like_number_playlist", nativeQuery = true)
+            "group by playlist_id order by like_number desc limit 9) as like_number_playlist", nativeQuery = true)
     List<Long> findTopLikePlaylistId();
 
     @Query(value = "select like_number from (select count(user_id) as like_number, playlist_id from like_playlist\n" +
-            "group by playlist_id order by like_number desc limit 5) as like_number_playlist", nativeQuery = true)
-    List<Long> findTopPlaylistLikeNumber();
+            "group by playlist_id order by like_number desc limit 9) as like_number_playlist", nativeQuery = true)
+    List<Integer> findTopPlaylistLikeNumber();
 
 
 }

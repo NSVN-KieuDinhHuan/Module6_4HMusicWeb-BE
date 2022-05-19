@@ -76,11 +76,15 @@ public class PlaylistService implements IPlaylistService {
             Playlist playlist = playlistRepository.findById(id).get();
             topLikePlaylists.add(playlist);
         }
+        List<Integer> like_numbers = findTopPlaylistLikeNumer();
+        for (int i = 0; i < topLikePlaylists.size(); i++) {
+            topLikePlaylists.get(i).setLikes(like_numbers.get(i));
+        }
         return topLikePlaylists;
     }
 
     @Override
-    public List<Long> findTopPlaylistLikeNumer() {
+    public List<Integer> findTopPlaylistLikeNumer() {
         return likePlaylistRepository.findTopPlaylistLikeNumber();
     }
 
