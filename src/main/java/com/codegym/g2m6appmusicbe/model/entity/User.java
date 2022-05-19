@@ -23,11 +23,11 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role")
     private List<Role> roles;
-    @Column( nullable = false, unique = true)
+    @Column( nullable = false)
     private String phoneNumber;
     @Column(columnDefinition = "varchar(255)", nullable = false)
     private String address;
-    @Column(columnDefinition = "varchar(255)", nullable = false)
+    @Column(columnDefinition = "varchar(255)")
     private String image;
 
     public User(String username, String password, String phoneNumber, String address, String image) {

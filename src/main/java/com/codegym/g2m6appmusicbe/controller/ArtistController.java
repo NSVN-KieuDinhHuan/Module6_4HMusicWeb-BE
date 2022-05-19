@@ -1,6 +1,7 @@
 package com.codegym.g2m6appmusicbe.controller;
 
 import com.codegym.g2m6appmusicbe.model.entity.Artist;
+import com.codegym.g2m6appmusicbe.model.entity.Song;
 import com.codegym.g2m6appmusicbe.service.artist.IArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("artists")
+@RequestMapping("/artists")
 public class ArtistController {
     @Autowired
    private IArtistService artistService;

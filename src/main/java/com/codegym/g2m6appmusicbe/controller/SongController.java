@@ -3,6 +3,7 @@ package com.codegym.g2m6appmusicbe.controller;
 import com.codegym.g2m6appmusicbe.model.dto.SongForm;
 import com.codegym.g2m6appmusicbe.model.entity.Song;
 import com.codegym.g2m6appmusicbe.model.entity.User;
+import com.codegym.g2m6appmusicbe.service.artist.IArtistService;
 import com.codegym.g2m6appmusicbe.service.song.ISongService;
 import com.codegym.g2m6appmusicbe.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class SongController {
     private ISongService songService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IArtistService artistService;
 
     @Value("${file-upload}")
     private String uploadPath;
@@ -71,6 +74,12 @@ public class SongController {
     @GetMapping("/user/{user_id}")
     public ResponseEntity<Iterable<Song>> getAllCreatedSongByUser(@PathVariable Long user_id){
         Iterable<Song> songs = songService.findCreatedSongByUserId(user_id);
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+
+    @GetMapping("/artist/{artist_id}")
+    public ResponseEntity<Iterable<Song>> getAllSongByArtist(@PathVariable Long artist_id){
+        Iterable<Song> songs = songService.findArtistByIdAndSongId(artist_id);
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 

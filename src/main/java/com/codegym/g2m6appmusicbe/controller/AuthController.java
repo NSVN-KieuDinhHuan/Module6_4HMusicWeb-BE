@@ -1,6 +1,6 @@
 package com.codegym.g2m6appmusicbe.controller;
 
-
+import com.codegym.g2m6appmusicbe.model.dto.ChangePasswordForm;
 import com.codegym.g2m6appmusicbe.model.dto.JwtResponse;
 import com.codegym.g2m6appmusicbe.model.dto.SignUpForm;
 import com.codegym.g2m6appmusicbe.model.entity.User;
@@ -14,10 +14,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -47,10 +46,58 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody SignUpForm user) {
-        if (!user.getPassword().equals(user.getConfirmPassword())){
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         User user1 = new User(user.getUsername(), user.getPassword(), user.getPhoneNumber(), user.getAddress(), user.getImage());
         return new ResponseEntity<>(userService.save(user1), HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User editUser) {
+        Optional<User> userOptional = userService.findById(id);
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        editUser.setId(id);
+        return new ResponseEntity<>(userService.save(editUser), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<User> deleteUser(@PathVariable Long id) {
+        Optional<User> userOptional = userService.findById(id);
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        userService.removeById(id);
+        return new ResponseEntity<>(userOptional.get(), HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public ResponseEntity<Iterable<User>> getAllUser(){
+        Iterable<User> users = userService.findAll();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getById(@PathVariable Long id){
+        Optional<User> user = userService.findById(id);
+        if(!user.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(user.get(), HttpStatus.OK);
+    }
+
+    @PutMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordForm changePasswordForm) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(changePasswordForm.getUsername(), changePasswordForm.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        User user= userService.findByUsername(changePasswordForm.getUsername());
+        if (changePasswordForm.getPassword().equals(changePasswordForm.getNewPassword())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        user.setPassword(changePasswordForm.getNewPassword());
+        return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
+    }
 }
+
