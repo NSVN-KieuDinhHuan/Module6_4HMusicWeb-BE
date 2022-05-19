@@ -12,4 +12,5 @@ public class ChangePasswordForm {
     private String username;
     private String password;
     private String newPassword;
+    private String confirmPassword;
 }

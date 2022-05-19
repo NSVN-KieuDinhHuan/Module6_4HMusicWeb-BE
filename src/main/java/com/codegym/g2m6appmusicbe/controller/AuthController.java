@@ -166,13 +166,17 @@ public class AuthController {
     @PutMapping("/changePassword/{id}")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordForm changePasswordForm) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(changePasswordForm.getUsername(), changePasswordForm.getPassword()));
+                new UsernamePasswordAuthenticationToken(
+                        changePasswordForm.getUsername(),
+                        changePasswordForm.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         User user = userService.findByUsername(changePasswordForm.getUsername());
-        if (changePasswordForm.getPassword().equals(changePasswordForm.getNewPassword())) {
+        if (changePasswordForm.getPassword().equals(changePasswordForm.getNewPassword())||
+                !changePasswordForm.getNewPassword().equals(changePasswordForm.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         user.setPassword(changePasswordForm.getNewPassword());
+        user.setConfirmPassword(changePasswordForm.getConfirmPassword());
         return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
     }
 }
