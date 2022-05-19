@@ -11,8 +11,10 @@ public interface ISongRepository extends PagingAndSortingRepository<Song, Long> 
     Iterable<Song> findByNameContaining(String name);
     @Query(value = "select * from songs where user_id = ?1", nativeQuery = true)
     Iterable<Song> findCreatedSongByUserId(Long user_id);
+    @Query(value = "select * from songs order by views desc limit 5", nativeQuery = true)
+    Iterable<Song> findAllByViewDesc();
+    @Query(value = "select * from songs order by views desc limit 1", nativeQuery = true)
+    Song findTopViewsSong();
     @Query(value = "select * from songs where user_id = ?1 and id=?2 ", nativeQuery = true)
     Optional<Song> findSongByIdaAndUserId(Long user_id, Long id);
-
-
 }

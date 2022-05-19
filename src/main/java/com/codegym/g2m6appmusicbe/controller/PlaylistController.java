@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -147,4 +148,29 @@ public class PlaylistController {
         }
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
+
+    @GetMapping("/getMostViews")
+    public ResponseEntity<Iterable<Playlist>> findMostViewsPlaylist(){
+        Iterable<Playlist> playlists = playlistService.findAllByViewDesc();
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
+    @GetMapping("/getNewest")
+    public ResponseEntity<Iterable<Playlist>> findNewestPlaylists(){
+        Iterable<Playlist> playlists = playlistService.findAllByCreateDateDesc();
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
+    @GetMapping("/getTopLikePlaylist")
+    public ResponseEntity<Iterable<Playlist>> getTopLikePlaylists(){
+        List<Playlist> playlists = playlistService.findTopLikePlaylist();
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
+    @GetMapping("/getTopLikeNumber")
+    public ResponseEntity<Iterable<Long>> getTopLikeNumber(){
+        List<Long> likeNumbers = playlistService.findTopPlaylistLikeNumer();
+        return new ResponseEntity<>(likeNumbers, HttpStatus.OK);
+    }
+
 }

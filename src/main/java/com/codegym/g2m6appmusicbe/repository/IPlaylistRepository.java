@@ -18,5 +18,12 @@ public interface IPlaylistRepository extends JpaRepository<Playlist, Long> {
 
     @Query(value = "select * from playlists where user_id = ?1", nativeQuery = true)
     Iterable<Playlist> findByUserId(Long user_id);
+
     Iterable<Playlist> findAllByNameContaining(String name);
+
+    @Query(value = "select * from playlists order by views desc limit 5",nativeQuery = true)
+    Iterable<Playlist> findAllByViewDesc();
+
+    @Query(value = "select * from playlists order by create_date desc limit 5", nativeQuery = true)
+    Iterable<Playlist> findAllByCreateDateDesc();
 }

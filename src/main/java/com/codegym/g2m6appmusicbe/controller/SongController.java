@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -132,5 +133,28 @@ public class SongController {
         Song song1 = new Song(id,songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), 0, songForm.getArtist(),0,0);
 
         return new ResponseEntity<>(songService.save(song1),HttpStatus.OK);
+    }
+
+    @GetMapping("/getMostViewSongs")
+    public ResponseEntity<Iterable<Song>> getAllByViewDesc(){
+        Iterable<Song> songs = songService.findAllByViewDesc();
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+    @GetMapping("/getTopViewSong")
+    public ResponseEntity<Song> getTopViewSong(){
+        Song song = songService.findTopViewsSong();
+        return new ResponseEntity<>(song, HttpStatus.OK);
+    }
+
+    @GetMapping("/getTopLikeSong")
+    public ResponseEntity<Iterable<Song>> getTopLikeSongs(){
+        List<Song> songs = songService.findTopLikeSong();
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+
+    @GetMapping("/getTopLikeNumber")
+    public ResponseEntity<Iterable<Long>> getTopLikeNumber(){
+        List<Long> likeNumbers = songService.findTopSongLikeNumer();
+        return new ResponseEntity<>(likeNumbers, HttpStatus.OK);
     }
 }

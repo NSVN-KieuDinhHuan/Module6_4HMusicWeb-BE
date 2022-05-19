@@ -2,18 +2,22 @@ package com.codegym.g2m6appmusicbe.service.playlist;
 
 import com.codegym.g2m6appmusicbe.model.entity.Playlist;
 import com.codegym.g2m6appmusicbe.model.entity.User;
+import com.codegym.g2m6appmusicbe.repository.ILikePlaylistRepository;
 import com.codegym.g2m6appmusicbe.repository.IPlaylistRepository;
 import com.codegym.g2m6appmusicbe.service.IGeneralService;
+import com.codegym.g2m6appmusicbe.service.likePlaylist.ILikePlaylistService;
 import com.sun.org.apache.bcel.internal.generic.ARETURN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PlaylistService implements IPlaylistService {
     @Autowired
     private IPlaylistRepository playlistRepository;
+    @Autowired
+    private ILikePlaylistRepository likePlaylistRepository;
     @Override
     public Iterable<Playlist> findAll() {
         return playlistRepository.findAll();
@@ -53,4 +57,32 @@ public class PlaylistService implements IPlaylistService {
     public Iterable<Playlist> findAllByNameContaining(String name) {
         return playlistRepository.findAllByNameContaining(name);
     }
+
+    @Override
+    public Iterable<Playlist> findAllByViewDesc() {
+        return playlistRepository.findAllByViewDesc();
+    }
+
+    @Override
+    public Iterable<Playlist> findAllByCreateDateDesc() {
+        return playlistRepository.findAllByCreateDateDesc();
+    }
+
+    @Override
+    public List<Playlist> findTopLikePlaylist() {
+        List<Long> topLikePlaylistIds = likePlaylistRepository.findTopLikePlaylistId();
+        List<Playlist> topLikePlaylists = new ArrayList<>();
+        for (Long id : topLikePlaylistIds) {
+            Playlist playlist = playlistRepository.findById(id).get();
+            topLikePlaylists.add(playlist);
+        }
+        return topLikePlaylists;
+    }
+
+    @Override
+    public List<Long> findTopPlaylistLikeNumer() {
+        return likePlaylistRepository.findTopPlaylistLikeNumber();
+    }
+
+
 }
