@@ -37,4 +37,9 @@ public class LikePlaylistService implements ILikePlaylistService{
     public Optional<LikePlaylist> findByPlaylistAndUser(Playlist playlist, User user) {
         return likePlaylistRepository.findByPlaylistAndUser(playlist, user);
     }
+
+    @Override
+    public Iterable<LikePlaylist> findAllByPlaylist(Playlist playlist) {
+        return likePlaylistRepository.findAllByPlaylist(playlist);
+    }
 }

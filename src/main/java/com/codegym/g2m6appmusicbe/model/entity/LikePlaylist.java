@@ -26,4 +26,9 @@ public class LikePlaylist {
         this.playlist = playlist;
         this.user = user;
     }
+
+    public LikePlaylist(Playlist playlist, User user) {
+        this.playlist = playlist;
+        this.user = user;
+    }
 }

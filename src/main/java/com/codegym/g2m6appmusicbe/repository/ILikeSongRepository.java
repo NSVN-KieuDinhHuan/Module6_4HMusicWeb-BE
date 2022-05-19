@@ -11,4 +11,5 @@ import java.util.Optional;
 @Repository
 public interface ILikeSongRepository extends JpaRepository<LikeSong, Long> {
     Optional<LikeSong> findBySongAndUser(Song song, User user);
+    Iterable<LikeSong> findAllBySong(Song song);
 }

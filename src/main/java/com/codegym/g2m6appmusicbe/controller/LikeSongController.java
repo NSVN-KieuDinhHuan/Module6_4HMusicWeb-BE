@@ -69,4 +69,59 @@ public class LikeSongController {
         songService.save(songOptional.get());
         return new ResponseEntity<>(likeSongService.save(optionalLikeSong.get()), HttpStatus.OK);
     }
+
+    @GetMapping("/song/{songId}/user/{userId}")
+    public ResponseEntity<LikeSong> getLikeSong(@PathVariable Long songId, @PathVariable Long userId){
+        Optional<Song> songOptional = songService.findById(songId);
+        if(!songOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Optional<User> userOptional = userService.findById(userId);
+        if(!userOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Optional<LikeSong> likeSongOptional = likeSongService.findBySongAndUser(songOptional.get(), userOptional.get());
+        if(!likeSongOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(likeSongOptional.get(), HttpStatus.OK);
+    }
+    @PostMapping("/addLikeSong/song/{songId}/user/{userId}")
+    public ResponseEntity<LikeSong> addLike(@PathVariable Long songId, @PathVariable Long userId){
+        Optional<Song> songOptional = songService.findById(songId);
+        if(!songOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Optional<User> userOptional = userService.findById(userId);
+        if(!userOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        LikeSong likeSong = new LikeSong(songOptional.get(), userOptional.get());
+        return new ResponseEntity<>(likeSongService.save(likeSong), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/deleteLikeSong/song/{songId}/user/{userId}")
+    public ResponseEntity<LikeSong> deleteLike(@PathVariable Long songId, @PathVariable Long userId){
+        Optional<Song> songOptional = songService.findById(songId);
+        if(!songOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Optional<User> userOptional = userService.findById(userId);
+        if(!userOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Optional<LikeSong> likeSongOptional = likeSongService.findBySongAndUser(songOptional.get(), userOptional.get());
+        likeSongService.removeById(likeSongOptional.get().getId());
+        return new ResponseEntity<>(likeSongOptional.get(), HttpStatus.OK);
+    }
+    @GetMapping("song/{songId}")
+    public ResponseEntity<Iterable<LikeSong>> getAllLike(@PathVariable Long songId){
+        Optional<Song> songOptional = songService.findById(songId);
+        if(!songOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Iterable<LikeSong> likeSongs = likeSongService.findAllBySong(songOptional.get());
+        return new ResponseEntity<>(likeSongs, HttpStatus.OK);
+    }
+
 }
