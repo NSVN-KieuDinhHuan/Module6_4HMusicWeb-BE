@@ -76,6 +76,12 @@ public class SongController {
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 
+    @GetMapping("/artist/{artist_id}")
+    public ResponseEntity<Iterable<Song>> getAllSongByArtist(@PathVariable Long artist_id){
+        Iterable<Song> songs = songService.findArtistByIdAndSongId(artist_id);
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Song> delete(@PathVariable Long id){
         Optional<Song> optionalSong = songService.findById(id);

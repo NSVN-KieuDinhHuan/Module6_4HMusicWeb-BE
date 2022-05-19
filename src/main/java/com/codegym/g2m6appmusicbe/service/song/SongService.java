@@ -78,4 +78,10 @@ public class SongService implements ISongService{
     public List<Long> findTopSongLikeNumer() {
         return likeSongRepository.findTopSongLikeNumber();
     }
+
+    @Override
+    public Iterable<Song> findArtistByIdAndSongId(Long artist_id) {
+        return songRepository.findArtistByIdAndSongId(artist_id);
+    }
+
 }
