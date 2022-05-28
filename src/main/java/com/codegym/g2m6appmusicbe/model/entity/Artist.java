@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "artists")
@@ -21,8 +20,12 @@ public class Artist {
     private boolean gender;
     private Date dateOfBirth;
     private String story;
-    @ManyToMany
-    private List<Category> categories;
+    @ManyToOne
+    private Category category;
     private String band;
     private String moreInfo;
+    //    @ManyToMany
+//    private List<Song> songs;
+    private int comments;
+    private int likes;
 }
