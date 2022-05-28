@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ISongService extends IGeneralService<Song> {
     Iterable<Song> findSongByNameContaining(String name);
-    Iterable<Song> findCreatedSongByUserId(Long user_id);
+    Iterable<Song> findCreatedSongByUserId();
     Optional<Song> findSongByIdaAndUserId(Long user_id, Long id);
 
     Iterable<Song> findArtistByIdAndSongId(Long artist_id);
@@ -19,6 +19,7 @@ public interface ISongService extends IGeneralService<Song> {
     List<Song> findTopLikeSong();
     List<Long> findTopSongLikeNumer();
     Song saveSong(SongForm songForm);
+    Song viewSong(Long Songid);
     Song updateSong(Long id,SongForm songForm);
 
 }

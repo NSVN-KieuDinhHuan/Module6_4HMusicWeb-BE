@@ -62,7 +62,10 @@ public class SongService implements ISongService{
     }
 
     @Override
-    public Iterable<Song> findCreatedSongByUserId(Long user_id) {
+    public Iterable<Song> findCreatedSongByUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        Long user_id = userPrincipal.getId();
         return songRepository.findCreatedSongByUserId(user_id);
     }
 
@@ -123,6 +126,16 @@ public class SongService implements ISongService{
         }
         Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), 0, songForm.getArtist(),0,0);
         return songRepository.save(song1);
+    }
+
+    @Override
+    public Song viewSong(Long songid) {
+        Optional<Song> optionalSong = songRepository.findById(songid);
+        if(!optionalSong.isPresent()){
+            return null;
+        }
+        optionalSong.get().setViews(optionalSong.get().getViews()+1);
+        return  songRepository.save(optionalSong.get());
     }
 
     @Override
