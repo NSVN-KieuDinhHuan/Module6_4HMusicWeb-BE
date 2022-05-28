@@ -1,6 +1,7 @@
 package com.codegym.g2m6appmusicbe.controller;
 
 import com.codegym.g2m6appmusicbe.model.dto.SongForm;
+import com.codegym.g2m6appmusicbe.model.dto.UserPrincipal;
 import com.codegym.g2m6appmusicbe.model.entity.Playlist;
 import com.codegym.g2m6appmusicbe.model.entity.Song;
 import com.codegym.g2m6appmusicbe.model.entity.User;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
@@ -42,36 +45,16 @@ public class SongController {
         Optional<Song> songOptional = songService.findById(id);
         return new ResponseEntity<>(songOptional.get(), HttpStatus.OK);
     }
-    @PostMapping("/user/{user_id}")
-    public ResponseEntity<Song> save(@ModelAttribute SongForm songForm ,@PathVariable Long user_id){
-        Optional<User> user=userService.findById(user_id);
-        MultipartFile song=songForm.getMp3File();
-        MultipartFile image=songForm.getImage();
-        long currentTime = System.currentTimeMillis(); //Xử lý lấy thời gian hiện tại
-        String imageName="";
-        String songName="";
-        if (image.getSize()!=0){
-            imageName=currentTime+songForm.getImage().getOriginalFilename();
-            try {
-                FileCopyUtils.copy(songForm.getImage().getBytes(), new File(uploadPath + imageName));
-            }catch (IOException e){
-            e.printStackTrace();
-            }
-        }
-        if (song.getSize()!=0){
-            songName=currentTime+songForm.getMp3File().getOriginalFilename();
-            try {
-                FileCopyUtils.copy(songForm.getMp3File().getBytes(), new File(uploadPath + songName));
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-        Song song1 = new Song(songForm.getId(),songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), 0, songForm.getArtist(),0,0);
-        return new ResponseEntity<>(songService.save(song1),HttpStatus.CREATED);
+    @PostMapping("/user")
+    public ResponseEntity<Song> save(@ModelAttribute SongForm songForm){
+        return new ResponseEntity<>(songService.saveSong(songForm),HttpStatus.CREATED);
     }
 
-    @GetMapping("/user/{user_id}")
-    public ResponseEntity<Iterable<Song>> getAllCreatedSongByUser(@PathVariable Long user_id){
+    @GetMapping("/user")
+    public ResponseEntity<Iterable<Song>> getAllCreatedSongByUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        Long user_id = userPrincipal.getId();
         Iterable<Song> songs = songService.findCreatedSongByUserId(user_id);
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
@@ -103,42 +86,9 @@ public class SongController {
            return new ResponseEntity<>(songService.save(optionalSong.get()),HttpStatus.OK);
        }
 
-           @PostMapping ("/user/{user_id}/{id}")
-    public ResponseEntity<Song> update(@PathVariable Long user_id,@PathVariable Long id,@ModelAttribute SongForm songForm){
-        Optional<User> user=userService.findById(user_id);
-        Optional<Song> oldsong=songService.findById(id);
-        long currentTime = System.currentTimeMillis(); //Xử lý lấy thời gian hiện tại
-
-        if(!oldsong.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        MultipartFile song=songForm.getMp3File();
-        MultipartFile image=songForm.getImage();
-        String imageName="";
-        String songName="";
-        if (image==null) {
-            imageName=oldsong.get().getImage();
-        }else {
-            imageName = currentTime+songForm.getImage().getOriginalFilename();
-            try {
-                FileCopyUtils.copy(songForm.getImage().getBytes(), new File(uploadPath + imageName));
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-        if (song==null) {
-            songName=oldsong.get().getMp3File();
-        }else {
-            songName = currentTime+songForm.getMp3File().getOriginalFilename();
-            try {
-                FileCopyUtils.copy(songForm.getMp3File().getBytes(), new File(uploadPath + songName));
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-        Song song1 = new Song(id,songForm.getName(),songForm.getDescription(),songName,imageName,songForm.getAuthor(), user.get(), songForm.getCategory(),songForm.getAlbum(),songForm.getTag(), 0, songForm.getArtist(),0,0);
-
-        return new ResponseEntity<>(songService.save(song1),HttpStatus.OK);
+       @PostMapping ("/user/{id}")
+       public ResponseEntity<Song> update(@PathVariable Long id,@ModelAttribute SongForm songForm){
+        return new ResponseEntity<>(songService.updateSong(id,songForm),HttpStatus.OK);
     }
 
     @GetMapping("/getMostViewSongs")
