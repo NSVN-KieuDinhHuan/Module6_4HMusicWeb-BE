@@ -6,10 +6,12 @@ import com.codegym.g2m6appmusicbe.model.entity.Song;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ISongRepository extends PagingAndSortingRepository<Song, Long> {
-    Iterable<Song> findByNameContaining(String name);
+
+    List<Song> findByNameContaining(String name);
     @Query(value = "select * from songs where user_id = ?1", nativeQuery = true)
     Iterable<Song> findCreatedSongByUserId(Long user_id);
     @Query(value = "select * from songs order by views desc limit 9", nativeQuery = true)
