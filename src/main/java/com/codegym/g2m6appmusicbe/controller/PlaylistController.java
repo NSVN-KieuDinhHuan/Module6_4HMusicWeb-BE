@@ -143,8 +143,8 @@ public class PlaylistController {
     }
 
     @GetMapping("/getTopLikeNumber")
-    public ResponseEntity<Iterable<Long>> getTopLikeNumber(){
-        List<Long> likeNumbers = playlistService.findTopPlaylistLikeNumer();
+    public ResponseEntity<Iterable<Integer>> getTopLikeNumber(){
+        List<Integer> likeNumbers = playlistService.findTopPlaylistLikeNumer();
         return new ResponseEntity<>(likeNumbers, HttpStatus.OK);
     }
 
