@@ -134,8 +134,8 @@ public class AuthController {
                 fileName);
         newUser.setId(id);
         newUser.setRoles(newSignUpForm.getRoles());
-        newUser.setPassword(oldUser.get().getPassword());
-        newUser.setConfirmPassword((oldUser.get().getConfirmPassword()));
+        newUser.setPassword(oldUser.orElse(new User()).getPassword());
+        newUser.setConfirmPassword((oldUser.orElse(new User()).getConfirmPassword()));
         return new ResponseEntity<>(userService.save(newUser), HttpStatus.OK);
     }
 

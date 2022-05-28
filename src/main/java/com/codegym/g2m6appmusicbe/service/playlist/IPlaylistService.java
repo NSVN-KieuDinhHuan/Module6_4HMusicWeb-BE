@@ -15,4 +15,6 @@ public interface IPlaylistService extends IGeneralService<Playlist> {
     Iterable<Playlist> findAllByCreateDateDesc();
     List<Playlist> findTopLikePlaylist();
     List<Long> findTopPlaylistLikeNumer();
+    void addSong(Long songId, Long playlistId);
+    void removeSong(Long songId, Long playlistId);
 }

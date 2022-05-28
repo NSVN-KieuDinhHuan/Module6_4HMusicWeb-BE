@@ -7,6 +7,7 @@ import com.codegym.g2m6appmusicbe.model.entity.User;
 import com.codegym.g2m6appmusicbe.model.dto.UserPrincipal;
 import com.codegym.g2m6appmusicbe.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,8 @@ import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
+    @Value("${file-upload}")
+    public String uploadPath;
     @Autowired
     private IUserRepository userRepository;
 
@@ -62,5 +65,9 @@ public class UserService implements IUserService {
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public String getUploadPath() {
+        return uploadPath;
     }
 }
