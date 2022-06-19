@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Repository
-@Transactional
+//@Repository
+//@Transactional
 public interface IPlaylistRepository extends JpaRepository<Playlist, Long> {
     Iterable<Playlist> findAllByUser(User user);
     @Modifying
